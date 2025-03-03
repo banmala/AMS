@@ -1,11 +1,11 @@
 import { Router } from "express";
-
+import { asyncHandler } from "../utils/asyncHandler";
+import { createArtist, listArtists } from "../services/artist.service";
+import { checkAccess } from "../middlewares/authorization";
 
 const artistRouter = Router();
 
-artistRouter.get("/", (req,res)=>{
-    res.send("List All Artist API Called!!")
-});
-
+artistRouter.post("/",asyncHandler(checkAccess(["artist_manager"])), asyncHandler(createArtist));
+artistRouter.get("/", asyncHandler(listArtists));
 
 export {artistRouter};
