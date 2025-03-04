@@ -66,6 +66,47 @@ const login = async (req: Request, res: Response) => {
     }
 };
 
-export {register, login};
+const getUserData = async (req: Request, res: Response) => {
+    try {
+        const userId: number = +req.params;
+        // Fetch user from database
+        const [rows]: any = await db.execute("SELECT * FROM user WHERE id = ?", [userId]);
+
+        if (!Array.isArray(rows) || rows.length === 0) {
+            return res.status(400).json({ success: false, message: "User with this id does not exist!", data: null });
+        }
+
+        const user = rows[0]; // Get the user object from query result
+
+        return res.status(200).json({ success: true, message: "Login successful!", data: {user} });
+    } catch (error: any) {
+        console.error("Login Error:", error);
+        return res.status(500).json({ success: false, message: error.message || "Internal Server Error", data: null });
+    }
+    
+}
+
+const getAuthUser = async (req: Request, res: Response) => {
+    try {
+        const userId: number = +req.body.user.id;
+        console.log("userId:", userId);
+        // Fetch user from database
+        const [rows]: any = await db.execute("SELECT * FROM user WHERE id = ?", [userId]);
+
+        if (!Array.isArray(rows) || rows.length === 0) {
+            return res.status(400).json({ success: false, message: "User with this id does not exist!", data: null });
+        }
+
+        const user = rows[0]; // Get the user object from query result
+
+        return res.status(200).json({ success: true, message: "Login successful!", data: {user} });
+    } catch (error: any) {
+        console.error("Login Error:", error);
+        return res.status(500).json({ success: false, message: error.message || "Internal Server Error", data: null });
+    }
+    
+}
+
+export {register, login, getUserData, getAuthUser};
 
 

@@ -1,3 +1,5 @@
+import { useAppDispatch, useAppSelector } from "@/store";
+import { loginUser } from "@/store/slices/auth.slice";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 
@@ -12,19 +14,19 @@ const Login = () => {
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm<IFormInput>();
-
   const navigate = useNavigate();
-  
+
+
+  const dispatch = useAppDispatch();
+  const loading = useAppSelector(state => state.auth.loading);
   const onSubmit: SubmitHandler<IFormInput> = (formInput) => {
-    console.log("Submitted Data: ",formInput )
-    if(formInput.email){
-      navigate("/dashboard");
-    }
+    dispatch(loginUser(formInput));
   };
 
   return (
     <div className="bg-teal-200 flex  justify-start flex-col w-4/12 h-max rounded-lg">
-      <h1 className="font-nunito text-4xl mt-8 text-center">Login</h1>
+      <h1 className="font-nunito text-4xl mt-8 text-center text-red-500 pl-[100px]">Login</h1>
+      {loading && <p>Loading...</p>}
       <form onSubmit={handleSubmit(onSubmit)} className="px-4 mx-4">
         <div className="flex flex-col gap-2 mt-6">
           <label htmlFor="email" className="font-nunito text-xl">
@@ -67,12 +69,10 @@ const Login = () => {
         </button>
       </form>
       {/*TODO*/}
-      {/* <a
-        href="#"
-        className="p-4 mx-4 text-sm mb-4 text-teal-700 underline cursor-pointer hover:no-underline"
-      >
-        Forgot password?
-      </a> */}
+      
+      <button className="mt-lg" onClick={()=>{navigate("/auth/register")}}>
+        Register
+      </button>
     </div>
   );
 };

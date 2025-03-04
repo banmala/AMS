@@ -1,35 +1,18 @@
-import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import './App.css'
-import Dashboard from './pages/Dashboard';
-import { AuthRedirectRoute } from './context/AuthRedirectRoute';
-import Login from './pages/Login';
-import Register from './pages/Register';
-import Home from './pages/Home';
-import ProtectedRoute from './context/ProtectedRoute';
-import ProtectedLayout from './layout/ProtectedLayout';
+import AuthRoute from './routes/auth.routes';
+import { ProtectedRoutes } from './routes/protected.routes';
+import { useAppSelector } from './store';
 
 function App() {
-
-  return (
-    <Router>
-        <Routes>
-          <Route path="/">
-            <Route index element={<AuthRedirectRoute element={<Home />} />} />
-            <Route
-              path="/login"
-              element={<AuthRedirectRoute element={<Login />} />}
-            />
-            <Route
-              path="/register"
-              element={<AuthRedirectRoute element={<Register />} />}
-            />
-            <Route element= {<ProtectedLayout element={<ProtectedRoute />} />} >
-              <Route path="/dashboard" element={<Dashboard />} />
-            </Route>
-          </Route>
-        </Routes>
-    </Router>
-  );
+  const routes = [];
+  const authenticated = useAppSelector(state => state.auth.authenticated);
+  if (authenticated) {
+    routes.push(...ProtectedRoutes);
+  } else {
+    routes.push(...AuthRoute);
+  }
+  return <RouterProvider router={createBrowserRouter(routes)} />;
 }
 
 export default App

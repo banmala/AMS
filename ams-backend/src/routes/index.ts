@@ -5,11 +5,13 @@ import { artistRouter } from "./artist.route";
 import { runSchemaRouter } from "./runSchema.route";
 import authentication from "../middlewares/authentication";
 import { asyncHandler } from "../utils/asyncHandler";
+import { userRouter } from "./user.route";
 
 const router = Router();
 
 router.use("/auth", authRouter);
 router.use(asyncHandler(authentication))
+router.use("/user", userRouter);
 router.use("/music", musicRouter);
 router.use("/artist", artistRouter);
 router.use("/schema",runSchemaRouter)

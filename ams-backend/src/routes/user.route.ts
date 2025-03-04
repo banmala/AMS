@@ -2,9 +2,9 @@ import { Router } from "express";
 import { getUserData, login, register, getAuthUser } from "../services/auth.service";
 import { asyncHandler } from "../utils/asyncHandler";
 
-const authRouter = Router();
+const userRouter = Router();
 
-authRouter.post("/login",asyncHandler(login));
-authRouter.post("/register",asyncHandler(register));
+userRouter.get("/authUser", asyncHandler(getAuthUser));
+userRouter.get("/:userId", asyncHandler(getUserData));
 
-export {authRouter};
+export {userRouter};

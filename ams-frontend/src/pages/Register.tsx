@@ -19,7 +19,7 @@ export default function  Register () {
 
   return (
     <div className="bg-teal-200 flex  justify-start flex-col w-4/12 h-max rounded-lg">
-      <h1 className="font-nunito text-4xl mt-8 text-center">Login</h1>
+      <h1 className="font-nunito text-4xl mt-8 text-center">Register</h1>
       <form onSubmit={handleSubmit(onSubmit)} className="px-4 mx-4">
         <div className="flex flex-col gap-2 mt-6">
           <label htmlFor="email" className="font-nunito text-xl">
