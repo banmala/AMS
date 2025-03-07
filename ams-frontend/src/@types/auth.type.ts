@@ -22,12 +22,6 @@ export interface IUser{
 export enum EGender{"m","f","o"}
 
 export enum ERole{"super_admin","artist_manager","artist"}
-
-export interface ILogin{
-    email : string,
-    password : string
-}
-
 export interface JwtPayloadExtended extends JwtPayload {
     data?: any;
   }

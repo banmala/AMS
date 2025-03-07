@@ -6,7 +6,7 @@ export interface UserRegisterInputData extends LoginInputData {
   first_name : string,
   last_name : string,
   phone?: string,
-  dob?: Date,
+  dob?: Date|string,
   gender?:  EGender,
   address ?: string,
   role?:ERole

@@ -1,27 +1,46 @@
 import { UserRegisterInputData } from "@/api/auth.api";
 import { useAppDispatch, useAppSelector } from "@/store";
 import { registerUser } from "@/store/slices/auth.slice";
-import { SubmitHandler, useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
+import { fetchUserById, getUsers } from "@/store/slices/user.slice";
+import { useEffect } from "react";
+import { useForm } from "react-hook-form";
+import { redirect, useNavigate, useParams } from "react-router-dom";
 
-export default function  Register () {
+export default function  UpdateUsers () {
+  const { userId } = useParams();
+  let detail = useAppSelector(store=>store.user.detail)
+  useEffect(() => {
+    if(userId){
+      dispatch(fetchUserById(+userId));
+    }
+  }, []);
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors, isSubmitting },
   } = useForm<UserRegisterInputData>();
+  
+  useEffect(()=>{
+    if(detail){
+      const dob = new Date(detail?.dob || "")?.toISOString().split("T")[0]
+      reset({...detail, dob})
+    }
+  },[detail])
   const navigate = useNavigate();
   
   const dispatch = useAppDispatch();
   const loading = useAppSelector(state => state.auth.loading);
   const onSubmit = async (formInput:UserRegisterInputData) => {
-    await dispatch(registerUser(formInput));
-    navigate("/auth/login")
+    const response = await dispatch(registerUser(formInput));
+    if (response) {
+      navigate("/user");
+      window.location.reload();
+    }
   };
-
   return (
-    <div className="bg-teal-200 flex  justify-start flex-col w-4/12 h-max rounded-lg">
-      <h1 className="font-nunito text-4xl mt-8 text-center">Register</h1>
+    <div className="flex  justify-start flex-col w-4/12 h-max rounded-lg">
+      <h1 className="font-nunito text-4xl mt-8 text-center">{userId?"Edit User":"Create New User"}</h1>
       <form onSubmit={handleSubmit(onSubmit)} className="px-4 mx-4">
         {/* First Name */}
         <div className="flex flex-col gap-2 mt-6">
@@ -77,7 +96,7 @@ export default function  Register () {
           )}
         </div>
         {/* Password */}
-        <div className="flex flex-col gap-2 mt-6 mb-6">
+        {!userId && <div className="flex flex-col gap-2 mt-6 mb-6">
           <label htmlFor="password" className="font-nunito text-xl">
             Password
           </label>
@@ -92,7 +111,7 @@ export default function  Register () {
           {errors.password && (
             <p className="text-red-500">{errors.password.message}</p>
           )}
-        </div>
+        </div>}
 
         {/* Phone */}
         <div className="flex flex-col gap-2 mt-6 mb-6">
@@ -168,18 +187,34 @@ export default function  Register () {
           )}
         </div>
 
+        {/* Role */}
+        <div className="flex flex-col gap-2 mt-6 mb-6">
+          <label htmlFor="dob" className="font-nunito text-xl">
+            Role
+          </label>
+          <select 
+            id="role" 
+            {...register("role", { required: "Role is required" })}
+            className="rounded-md h-12 pl-4 focus:border-gray-400 border-2 focus:outline-none text-sm"
+          >
+            <option selected disabled>Select Role</option>
+            <option value="super_admin">Super Admin</option>
+            <option value="artist_manager">Artist Manager</option>
+            <option value="artist">Artist</option>
+          </select>
+          {errors.role && (
+            <p className="text-red-500">{errors.role.message}</p>
+          )}
+        </div>
+
         <button
           type="submit"
           className="rounded-xl border-2 px-2 py-1"
           disabled={isSubmitting}
         >
-          {loading ? "Logging in..." : "Register"}
+          {loading ? "Logging in..." : userId?"Edit User":"Create New User"}
         </button>
       </form>
-
-      <button className="mt-lg hover:underline"  onClick={()=>{navigate("/auth/login")}}>
-        Already have an account? Login
-      </button>
     </div>
   );
 };

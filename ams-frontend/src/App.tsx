@@ -1,12 +1,13 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import './App.css'
 import AuthRoute from './routes/auth.routes';
 import { ProtectedRoutes } from './routes/protected.routes';
 import { useAppSelector } from './store';
+import { ERole } from './@types/auth.type';
+import Users from './pages/Users';
 
 function App() {
   const routes = [];
-  const authenticated = useAppSelector(state => state.auth.authenticated);
+  const {authenticated,authUser} = useAppSelector(state => state.auth);
   if (authenticated) {
     routes.push(...ProtectedRoutes);
   } else {

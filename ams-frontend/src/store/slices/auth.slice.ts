@@ -1,9 +1,10 @@
 import {
   getLocalStorage,
+  removeLocalStorage,
   setLocalStorage,
 } from '@/lib/localstorage.utils';
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { getUserData, LoginInputData, loginUserApi } from '@/api/auth.api';
+import { getUserData, LoginInputData, loginUserApi, registerUserApi, UserRegisterInputData } from '@/api/auth.api';
 import { ILoginResponse, IUser } from '@/@types/auth.type';
 
 export interface IAuthStorage {
@@ -52,19 +53,18 @@ export const AuthSlice = createSlice({
         state.loading = false;
         state.token = undefined;
       })
-      // .addCase(logoutUser.pending, state => {
-      //   state.loading = true;
-      // })
-      // .addCase(logoutUser.fulfilled, state => {
-      //   state.token = undefined;
-      //   state.authenticated = false;
-      //   state.loading = false;
-      //   state.authUser = undefined;
-      //   removeLocalStorage('token');
-      // })
-      // .addCase(logoutUser.rejected, state => {
-      //   state.loading = false;
-      // })
+      .addCase(logoutUser.pending, state => {
+        state.loading = true;
+      })
+      .addCase(logoutUser.fulfilled, state => {
+        state.token = undefined;
+        state.authenticated = false;
+        state.loading = false;
+        state.authUser = undefined;
+      })
+      .addCase(logoutUser.rejected, state => {
+        state.loading = false;
+      })
       .addCase(fetchAuthUser.pending, state => {
         state.loading = true;
       })
@@ -77,6 +77,15 @@ export const AuthSlice = createSlice({
         state.loading = false;
         state.authUser = undefined;
         state.authenticated = false;
+      })
+      .addCase(registerUser.pending, state => {
+        state.loading = true;
+      })
+      .addCase(registerUser.fulfilled, (state, action) => {
+        state.loading = false;
+      })
+      .addCase(registerUser.rejected, state => {
+        state.loading = false;
       });
   },
 });
@@ -99,9 +108,24 @@ export const loginUser = createAsyncThunk(
   }
 );
 
-// export const logoutUser = createAsyncThunk('users/logout', async () => {
-//   return logoutUser();
-// });
+export const registerUser = createAsyncThunk(
+  'users/register',
+  async (registerData: UserRegisterInputData): Promise<any> => {
+    const registerResult = await registerUserApi(registerData);
+    if (
+      registerResult?.success == true
+    ) {
+      return registerResult.message;
+    } else {
+      throw new Error('Error while registering');
+    }
+  }
+);
+
+export const logoutUser = createAsyncThunk('users/logout', async () => {
+  removeLocalStorage("token");
+  return true;
+});
 
 export const fetchAuthUser = createAsyncThunk(
   'users/fetchAuthUser',

@@ -1,13 +1,17 @@
 // import { RedirectHOC } from './redirect.hook';
-import React from 'react';
-import { Outlet } from 'react-router-dom';
+import { useAppSelector } from '@/store';
+import { Outlet, redirect, useNavigate } from 'react-router-dom';
 
 const AuthLayout = () => {
+  const { authenticated } = useAppSelector(state => state.auth);
+  const navigate = useNavigate();
+  if (authenticated) {
+    redirect('/dashboard');
+  }
   return (
-    <div>
+    <div className='h-[100vh]'>
       <h1>Auth Layout</h1>
-      <hr />
-      <div>
+      <div className='flex justify-center items-center h-full'>
         <Outlet />
       </div>
     </div>

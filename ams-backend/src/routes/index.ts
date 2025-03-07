@@ -10,11 +10,11 @@ import { userRouter } from "./user.route";
 const router = Router();
 
 router.use("/auth", authRouter);
+router.use("/schema",runSchemaRouter)
 router.use(asyncHandler(authentication))
 router.use("/user", userRouter);
 router.use("/music", musicRouter);
 router.use("/artist", artistRouter);
-router.use("/schema",runSchemaRouter)
 
 
 export default router;

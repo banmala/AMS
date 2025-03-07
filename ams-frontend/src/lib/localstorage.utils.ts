@@ -1,6 +1,5 @@
 export const setLocalStorage = (key: string, value: string) => {
   if (value && typeof value === 'string') {
-    console.log("here")
     localStorage.setItem(key, value);
   } else {
     localStorage.setItem(key, JSON.stringify(value));
