@@ -70,9 +70,7 @@ const getUserData = async (req: Request, res: Response) => {
     try {
         const userId: number = +req.params.userId;
         // Fetch user from database
-        console.log("userId: ", userId)
         const [rows]: any = await db.execute("SELECT * FROM user WHERE id = ?", [userId]);
-        console.log("rows: ", rows)
         if (!Array.isArray(rows) || rows.length === 0) {
             return res.status(400).json({ success: false, message: "User with this id does not exist!", data: null });
         }

@@ -68,40 +68,7 @@ export const UserSlice = createSlice({
         state.loading = false;
         state.error = action.error.message;
         state.detail=undefined
-      })
-      // .addCase(createUser.pending, state => {
-      //   state.loading = true;
-      //   state.error = '';
-      // })
-      // .addCase(createUser.fulfilled, (state, action) => {
-      //   state.loading = false;
-      //   state.data.items.concat(action.payload.data);
-      // })
-      // .addCase(createUser.rejected, (state, action) => {
-      //   state.loading = false;
-      // })
-      // .addCase(updateUser.pending, state => {
-      //   state.loading = true;
-      //   state.error = '';
-      // })
-      // .addCase(updateUser.fulfilled, state => {
-      //   state.loading = false;
-      // })
-      // .addCase(updateUser.rejected, (state, action) => {
-      //   state.loading = false;
-      // })
-      // .addCase(fetchUserDetail.pending, state => {
-      //   state.loading = true;
-      //   state.error = '';
-      // })
-      // .addCase(fetchUserDetail.fulfilled, (state, action) => {
-      //   state.loading = false;
-      //   state.detail = action.payload;
-      // })
-      // .addCase(fetchUserDetail.rejected, (state, action) => {
-      //   state.loading = false;
-      //   state.error = action.error.message;
-      // });
+      });
   },
 });
 
@@ -120,20 +87,6 @@ export const getUsers = createAsyncThunk(
   }
 );
 
-// export const createUser = createAsyncThunk(
-//   'user/createUser',
-//   async (data: IUsers, { rejectWithValue }) => {
-    // try {
-    //   return await UserApi.create(data);
-    // } catch (err: any) {
-    //   if (!err.response) {
-    //     throw err;
-    //   }
-    //   return rejectWithValue(err.response.data.errors);
-    // }
-//   }
-// );
-
 export const updateUser = createAsyncThunk(
   'user/updateUser',
   async ({data,userId}:{data: IUser,userId:number}, { rejectWithValue }) => {
@@ -147,13 +100,6 @@ export const updateUser = createAsyncThunk(
     }
   }
 );
-
-// export const fetchUserDetail = createAsyncThunk(
-//   'user/fetchUserDetail',
-//   async (itemId: string): Promise<IUsers> => {
-//     return UserApi.fetchDetail(itemId);
-//   }
-// );
 
 export const deleteUser = createAsyncThunk(
     'user/deleteUser',
@@ -173,7 +119,6 @@ export const deleteUser = createAsyncThunk(
     'users/fetchUserById',
     async (id:number) => {
       const fetchData =  await fetchUserDetailById(id);
-      console.log("FetchData: ", fetchData)
       if (fetchData?.success == true) {
         return fetchData.data;
       } else {

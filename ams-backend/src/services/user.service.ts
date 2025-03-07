@@ -91,6 +91,4 @@ const updateUser = async (req: Request, res: Response) => {
     }
 };
 
-export {getUserData, getAllUsers, deleteUserById, updateUser};
-
-
+export {getUserData, getAllUsers, deleteUserById, updateUser};          

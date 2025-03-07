@@ -94,7 +94,6 @@ export const loginUser = createAsyncThunk(
   'users/login',
   async (loginData: LoginInputData): Promise<ILoginResponse> => {
     const loginResult = await loginUserApi(loginData);
-    console.log("LoginResult: ", loginResult)
     // return loginResult
     if (
       loginResult?.success == true
@@ -131,7 +130,6 @@ export const fetchAuthUser = createAsyncThunk(
   'users/fetchAuthUser',
   async () => {
     const fetchData =  await getUserData();
-    console.log("FetchData: ", fetchData)
     if (fetchData?.success == true) {
       return fetchData.data;
     } else {
