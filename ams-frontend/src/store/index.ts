@@ -7,6 +7,8 @@ import {
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 import { AuthSlice } from './slices/auth.slice';
 import { UserSlice } from './slices/user.slice';
+import { ArtistSlice } from './slices/artist.slice';
+import { MusicSlice } from './slices/music.slice';
 
 
 /**
@@ -17,6 +19,8 @@ const store = configureStore({
   reducer: combineReducers({
     auth: AuthSlice.reducer,
     user: UserSlice.reducer,
+    artist: ArtistSlice.reducer,
+    music: MusicSlice.reducer
   }),
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware({

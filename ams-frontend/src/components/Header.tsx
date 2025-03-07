@@ -29,7 +29,7 @@ export default function  Header ()  {
           <div className="flex space-x-4">
             <button 
               className="px-4 py-2 border border-blue-500 text-blue-500 rounded-lg hover:bg-blue-500 hover:text-white"
-              onClick={()=>{dispatch(logoutUser());redirect("/auth/login")}}
+              onClick={()=>{dispatch(logoutUser());redirect("/auth/login");window.location.reload()}}
             >
               Logout
             </button>

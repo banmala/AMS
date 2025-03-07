@@ -93,13 +93,15 @@ export const MusicSlice = createSlice({
         state.loading = false;
         state.error = action.error.message;
       })
-      .addCase(deleteMusic.pending, state => {
+      .addCase(updateMusic.pending, state => {
         state.loading = true;
+        state.error = '';
       })
-      .addCase(deleteMusic.fulfilled, (state, action) => {
+      .addCase(updateMusic.fulfilled, (state, action) => {
         state.loading = false;
+        state.data.items = action.payload.musics;
       })
-      .addCase(deleteMusic.rejected, (state, action) => {
+      .addCase(updateMusic.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message;
       })

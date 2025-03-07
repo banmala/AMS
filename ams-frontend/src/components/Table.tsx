@@ -37,7 +37,7 @@ const Table: React.FC<TableProps> = ({ columns, data, onDetail, onDelete, onEdit
           </tr>
         </thead>
         <tbody>
-          {data.map((row, rowIndex) => (
+          {data?.map((row, rowIndex) => (
             <tr key={rowIndex} className="hover:bg-gray-50 border-b" onClick={()=>onDetail(row.id)}>
               <td key="SN" className="px-6 py-4">
                   {rowIndex+1}
