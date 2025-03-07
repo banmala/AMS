@@ -1,6 +1,6 @@
 import api from "@/config/axios";
-import { EGender, ERole } from "@/@types/auth.type";
 import { apiRequest } from "@/lib/request";
+import { UserRegisterInputData } from "./auth.api";
 
 
 export const getAllUserData = async () =>{
@@ -13,4 +13,8 @@ export const deleteUserById = async (id:number) => {
 
 export const fetchUserDetailById = async (id:number) =>{
   return  await apiRequest(api.get(`/user/${id}`));
+}
+
+export const updateUserApi = (registerData: UserRegisterInputData, id:number) => {
+  return apiRequest(api.put(`/user/${id}`, registerData));
 }

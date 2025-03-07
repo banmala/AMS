@@ -7,13 +7,13 @@ export interface ILoginResponse {
 
 
 export interface IUser{
-    id:string,
+    id?:string,
     first_name : string,
     last_name : string,
     email : string,
     password : string,
     phone?: string,
-    dob?: Date,
+    dob?: Date|string,
     gender?:  EGender,
     address ?: string,
     role?:ERole

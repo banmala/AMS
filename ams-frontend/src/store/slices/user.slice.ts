@@ -1,8 +1,8 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { RootState } from '..';
 import { IUser } from '@/@types/auth.type';
-import { getUserData } from '@/api/auth.api';
-import { deleteUserById, fetchUserDetailById, getAllUserData } from '@/api/user.api';
+import { getUserData, registerUserApi } from '@/api/auth.api';
+import { deleteUserById, fetchUserDetailById, getAllUserData, updateUserApi } from '@/api/user.api';
 
 interface userState {
   data: {
@@ -134,19 +134,19 @@ export const getUsers = createAsyncThunk(
 //   }
 // );
 
-// export const updateUser = createAsyncThunk(
-//   'user/updateUser',
-//   async (data: IUsers, { rejectWithValue }) => {
-//     try {
-//       return await UserApi.update(data);
-//     } catch (err: any) {
-//       if (!err.response) {
-//         throw err;
-//       }
-//       return rejectWithValue(err.response.data.errors);
-//     }
-//   }
-// );
+export const updateUser = createAsyncThunk(
+  'user/updateUser',
+  async ({data,userId}:{data: IUser,userId:number}, { rejectWithValue }) => {
+    try {
+      return await updateUserApi(data, userId);
+    } catch (err: any) {
+      if (!err.response) {
+        throw err;
+      }
+      return rejectWithValue(err.response.data.errors);
+    }
+  }
+);
 
 // export const fetchUserDetail = createAsyncThunk(
 //   'user/fetchUserDetail',

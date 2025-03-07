@@ -1,7 +1,7 @@
 import { UserRegisterInputData } from "@/api/auth.api";
 import { useAppDispatch, useAppSelector } from "@/store";
 import { registerUser } from "@/store/slices/auth.slice";
-import { fetchUserById, getUsers } from "@/store/slices/user.slice";
+import { fetchUserById, getUsers, updateUser } from "@/store/slices/user.slice";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { redirect, useNavigate, useParams } from "react-router-dom";
@@ -32,10 +32,18 @@ export default function  UpdateUsers () {
   const dispatch = useAppDispatch();
   const loading = useAppSelector(state => state.auth.loading);
   const onSubmit = async (formInput:UserRegisterInputData) => {
-    const response = await dispatch(registerUser(formInput));
-    if (response) {
-      navigate("/user");
-      window.location.reload();
+    if(userId){
+      const response = await dispatch(updateUser({data:formInput, userId:+userId}));
+      if (response) {
+        navigate("/user");
+        // window.location.reload();
+      }
+    }else{
+      const response = await dispatch(registerUser(formInput));
+      if (response) {
+        navigate("/user");
+        // window.location.reload();
+      }
     }
   };
   return (
