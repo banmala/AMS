@@ -41,9 +41,9 @@ export const displaySnackbar = createAsyncThunk(
 
 export const removeSnackbar = createAsyncThunk(
   'snackbar/removeSnackbar',
-  async () => {
+  async (): Promise<any> => {
     try {
-      return true;
+      return true
     } catch (err: any) {
       if (!err.response) {
         throw err;

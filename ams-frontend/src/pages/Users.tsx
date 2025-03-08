@@ -1,5 +1,6 @@
 import Table from "@/components/Table";
 import { useAppDispatch, useAppSelector } from "@/store";
+import { displaySnackbar } from "@/store/slices/snackbar.slice";
 import { deleteUser, getUsers } from "@/store/slices/user.slice";
 import { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
@@ -13,7 +14,10 @@ export default function Users () {
         dispatch(getUsers());
     }, []);
     const onDelete = async(id: number) => {
-      await dispatch(deleteUser(id)).unwrap();
+      const result = await dispatch(deleteUser(id)).unwrap();
+      if(result){
+        dispatch(displaySnackbar("Successfully deleted user"))
+      }
       dispatch(getUsers()); 
     };
     const userColumns = userData.length > 0 ? Object.keys(userData[0]).filter(key => key !== "id")  : [];

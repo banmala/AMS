@@ -2,6 +2,7 @@ import { LoginInputData } from "@/api/auth.api";
 import { useAppDispatch, useAppSelector } from "@/store";
 import { loginUser } from "@/store/slices/auth.slice";
 import { displaySnackbar } from "@/store/slices/snackbar.slice";
+import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 
@@ -13,15 +14,22 @@ const Login = () => {
     formState: { errors, isSubmitting },
   } = useForm<LoginInputData>();
   const navigate = useNavigate();
+  const [authenticated,setAuthenticated] = useState(false);
 
   const dispatch = useAppDispatch();
   const loading = useAppSelector(state => state.auth.loading);
   const onSubmit: SubmitHandler<LoginInputData> = async (formInput) => {
     await dispatch(loginUser(formInput));
-    dispatch(displaySnackbar("Succefylly Logged In!"))
-    navigate("/dashboard")
+    setAuthenticated(true)
+    // navigate("/dashboard")
     // window.location.reload();
   };
+
+  useEffect(()=>{
+    if(authenticated){
+      navigate('/dashboard')
+    }
+  },[authenticated])
 
   return (
     <div className="bg-teal-200 flex  justify-start flex-col w-4/12 h-max rounded-lg">

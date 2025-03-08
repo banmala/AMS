@@ -6,6 +6,7 @@ import {
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { getUserData, LoginInputData, loginUserApi, registerUserApi, UserRegisterInputData } from '@/api/auth.api';
 import { ILoginResponse, IUser } from '@/@types/auth.type';
+import { displaySnackbar } from './snackbar.slice';
 
 export interface IAuthStorage {
   authUser?: IUser;
@@ -92,12 +93,13 @@ export const AuthSlice = createSlice({
 
 export const loginUser = createAsyncThunk(
   'users/login',
-  async (loginData: LoginInputData): Promise<ILoginResponse> => {
+  async (loginData: LoginInputData, {dispatch, getState}): Promise<ILoginResponse> => {
     const loginResult = await loginUserApi(loginData);
     // return loginResult
     if (
       loginResult?.success == true
     ) {
+      dispatch(displaySnackbar(loginResult.message))
       const _token = loginResult.data.token;
       setLocalStorage('token', _token);
       return loginResult.data;
