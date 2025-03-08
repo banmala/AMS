@@ -1,6 +1,4 @@
-import { IUser } from "@/@types/auth.type";
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import ConfirmationModal from "./Modal";
 
 interface TableProps {

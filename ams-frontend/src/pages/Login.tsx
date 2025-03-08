@@ -1,8 +1,9 @@
 import { LoginInputData } from "@/api/auth.api";
 import { useAppDispatch, useAppSelector } from "@/store";
 import { loginUser } from "@/store/slices/auth.slice";
+import { displaySnackbar } from "@/store/slices/snackbar.slice";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { redirect, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 
 const Login = () => {
@@ -17,8 +18,9 @@ const Login = () => {
   const loading = useAppSelector(state => state.auth.loading);
   const onSubmit: SubmitHandler<LoginInputData> = async (formInput) => {
     await dispatch(loginUser(formInput));
+    dispatch(displaySnackbar("Succefylly Logged In!"))
     navigate("/dashboard")
-    window.location.reload();
+    // window.location.reload();
   };
 
   return (

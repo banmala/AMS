@@ -4,16 +4,22 @@ import { ProtectedRoutes } from './routes/protected.routes';
 import { useAppSelector } from './store';
 import { ERole } from './@types/auth.type';
 import Users from './pages/Users';
+import Snackbar from './components/SnackBar';
+
+const createRoutes = (authenticated: boolean) => {
+  return authenticated ? [...ProtectedRoutes] : [...AuthRoute];
+};
 
 function App() {
-  const routes = [];
-  const {authenticated,authUser} = useAppSelector(state => state.auth);
-  if (authenticated) {
-    routes.push(...ProtectedRoutes);
-  } else {
-    routes.push(...AuthRoute);
-  }
-  return <RouterProvider router={createBrowserRouter(routes)} />;
+  const { authenticated } = useAppSelector((state) => state.auth);
+  const router = createBrowserRouter(createRoutes(authenticated));
+
+  return (
+    <>
+      <RouterProvider router={router} />
+      <Snackbar />
+    </>
+  );
 }
 
 export default App

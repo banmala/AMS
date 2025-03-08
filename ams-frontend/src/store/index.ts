@@ -9,6 +9,7 @@ import { AuthSlice } from './slices/auth.slice';
 import { UserSlice } from './slices/user.slice';
 import { ArtistSlice } from './slices/artist.slice';
 import { MusicSlice } from './slices/music.slice';
+import { SnackbarSlice } from './slices/snackbar.slice';
 
 
 /**
@@ -20,7 +21,8 @@ const store = configureStore({
     auth: AuthSlice.reducer,
     user: UserSlice.reducer,
     artist: ArtistSlice.reducer,
-    music: MusicSlice.reducer
+    music: MusicSlice.reducer,
+    snackbar:SnackbarSlice.reducer,
   }),
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware({
