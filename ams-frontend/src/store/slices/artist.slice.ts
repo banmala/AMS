@@ -51,7 +51,7 @@ export const ArtistSlice = createSlice({
       })
       .addCase(getArtists.fulfilled, (state, action) => {
         state.loading = false;
-        state.data.items = action.payload.artists;
+        state.data.items = action.payload;
       })
       .addCase(getArtists.rejected, (state, action) => {
         state.loading = false;
@@ -62,7 +62,7 @@ export const ArtistSlice = createSlice({
       })
       .addCase(fetchArtistById.fulfilled, (state, action) => {
         state.loading = false;
-        state.detail=action.payload.artist
+        state.detail=action.payload
       })
       .addCase(fetchArtistById.rejected, (state, action) => {
         state.loading = false;
@@ -130,7 +130,7 @@ export const fetchArtistById = createAsyncThunk(
   async (id:number) => {
     const fetchData =  await fetchArtistDetailById(id);
     if (fetchData?.success == true) {
-      return fetchData.data;
+      return fetchData.data[0];
     } else {
       throw new Error('Error fetching artist data');
     }

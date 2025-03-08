@@ -12,7 +12,7 @@ const createMusic = async (req: Request, res: Response) => {
         }
         // Insert new music
         const [result]: any = await db.execute(
-            "INSERT INTO music (artist_id, title, album_name, genre,) VALUES (?,?,?,?)",
+            "INSERT INTO music (artist_id, title, album_name, genre) VALUES (?,?,?,?)",
             [musicData.artist_id,musicData.title,musicData.album_name,musicData.genre]
         );
         return res.status(201).json({ success: true, message: "Successfully created music!", data: result });

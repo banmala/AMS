@@ -9,6 +9,8 @@ import UpdateUsers from '@/pages/CreateUpdateUser';
 import MusicDetail from '@/pages/MusicDetail';
 import ArtistDetail from '@/pages/ArtistDetail';
 import UserDetail from '@/pages/UserDetail';
+import UpdateMusics from '@/pages/UpdateMusics';
+import UpdateArtists from '@/pages/UpdateArtists';
 
 export const ProtectedRoutes: Array<RouteObject> = [
   {
@@ -54,6 +56,22 @@ export const ProtectedRoutes: Array<RouteObject> = [
       {
         path: '/updateUsers/:userId',
         element: <UpdateUsers />,
+      },
+      {
+        path: '/updateMusics',
+        element: <UpdateMusics />,
+      },
+      {
+        path: '/updateMusics/:musicId',
+        element: <UpdateMusics />,
+      },
+      {
+        path: '/updateArtists',
+        element: <UpdateArtists />,
+      },
+      {
+        path: '/updateArtists/:artistId',
+        element: <UpdateArtists />,
       },
       {
         path: '*',

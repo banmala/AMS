@@ -51,7 +51,7 @@ export const MusicSlice = createSlice({
       })
       .addCase(getMusics.fulfilled, (state, action) => {
         state.loading = false;
-        state.data.items = action.payload.musics;
+        state.data.items = action.payload;
       })
       .addCase(getMusics.rejected, (state, action) => {
         state.loading = false;
@@ -63,7 +63,7 @@ export const MusicSlice = createSlice({
       })
       .addCase(fetchMusicByArtist.fulfilled, (state, action) => {
         state.loading = false;
-        state.data.items = action.payload.musics;
+        state.data.items = action.payload;
       })
       .addCase(fetchMusicByArtist.rejected, (state, action) => {
         state.loading = false;
@@ -74,7 +74,7 @@ export const MusicSlice = createSlice({
       })
       .addCase(fetchMusicById.fulfilled, (state, action) => {
         state.loading = false;
-        state.detail=action.payload.music
+        state.detail=action.payload
       })
       .addCase(fetchMusicById.rejected, (state, action) => {
         state.loading = false;
@@ -87,7 +87,6 @@ export const MusicSlice = createSlice({
       })
       .addCase(deleteMusic.fulfilled, (state, action) => {
         state.loading = false;
-        state.data.items = action.payload.musics;
       })
       .addCase(deleteMusic.rejected, (state, action) => {
         state.loading = false;
@@ -99,7 +98,6 @@ export const MusicSlice = createSlice({
       })
       .addCase(updateMusic.fulfilled, (state, action) => {
         state.loading = false;
-        state.data.items = action.payload.musics;
       })
       .addCase(updateMusic.rejected, (state, action) => {
         state.loading = false;
@@ -145,7 +143,7 @@ export const fetchMusicById = createAsyncThunk(
   async (id:number) => {
     const fetchData =  await fetchMusicDetailById(id);
     if (fetchData?.success == true) {
-      return fetchData.data;
+      return fetchData.data[0];
     } else {
       throw new Error('Error fetching music data');
     }

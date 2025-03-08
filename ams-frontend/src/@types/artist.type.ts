@@ -3,7 +3,7 @@ import { EGender } from "./auth.type";
 export interface IArtist {
     id?:number,
     name :string,
-    dob?:Date,
+    dob?:Date|string,
     gender:EGender,
     address?:string,
     first_release_year?:Date,

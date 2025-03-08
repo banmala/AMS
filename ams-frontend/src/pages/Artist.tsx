@@ -16,7 +16,6 @@ export default function Artists () {
       await dispatch(deleteArtist(id)).unwrap();
       dispatch(getArtists()); 
     };
-    console.log(" artistData: ", artistData)
     const artistColumns = artistData?.length > 0 ? Object.keys(artistData[0]).filter(key => key !== "id")  : [];
     return (
       <div className="p-6">

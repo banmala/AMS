@@ -32,8 +32,8 @@ const Login = () => {
   },[authenticated])
 
   return (
-    <div className="bg-teal-200 flex  justify-start flex-col w-4/12 h-max rounded-lg">
-      <h1 className="font-nunito text-4xl mt-8 text-center">Login</h1>
+    <div className="shadow-lg border-gray-100 border-2 flex py-5 justify-start flex-col w-4/12 h-max rounded-2xl">
+      <h1 className="font-nunito text-4xl text-center">Login</h1>
       {loading && <p>Loading...</p>}
       <form onSubmit={handleSubmit(onSubmit)} className="px-4 mx-4">
         <div className="flex flex-col gap-2 mt-6">

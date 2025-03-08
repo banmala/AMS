@@ -35,13 +35,12 @@ export default function  UpdateUsers () {
     if(userId){
       const response = await dispatch(updateUser({data:formInput, userId:+userId}));
       if (response) {
-        redirect("/user");
-        // window.location.reload();
+        navigate("/user");
       }
     }else{
       const response = await dispatch(registerUser(formInput));
       if (response) {
-        redirect("/user");
+        navigate("/user");
       }
     }
   };

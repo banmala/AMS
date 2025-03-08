@@ -3,7 +3,7 @@ import ConfirmationModal from "./Modal";
 
 interface TableProps {
   columns: string[];
-  data: any[];
+  data?: any[];
   onDetail:(id:number)=>void
   onEdit:(id:number)=>void
   onDelete:(id:number)=>void

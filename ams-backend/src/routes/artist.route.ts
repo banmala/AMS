@@ -5,7 +5,7 @@ import { checkAccess } from "../middlewares/authorization";
 
 const artistRouter = Router();
 
-artistRouter.post("/",asyncHandler(checkAccess(["artist_manager"])), asyncHandler(createArtist));
+artistRouter.post("/",asyncHandler(checkAccess(["artist_manager","super_admin"])), asyncHandler(createArtist));
 artistRouter.get("/:artistId", asyncHandler(getArtists));
 artistRouter.get("/", asyncHandler(listArtists));
 artistRouter.delete("/:artistId", asyncHandler(deleteArtistById));
