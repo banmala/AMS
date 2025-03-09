@@ -30,7 +30,7 @@ export const ProtectedRoutes: Array<RouteObject> = [
         element: <Music />,
       },
       {
-        path: '/musicDetail/:id',
+        path: '/musicDetail/:musicId',
         element: <MusicDetail />,
       },
       {
@@ -38,7 +38,7 @@ export const ProtectedRoutes: Array<RouteObject> = [
         element: <Artist />,
       },
       {
-        path: '/artist/:id',
+        path: '/artist/:artistId',
         element: <ArtistDetail />,
       },
       {
@@ -46,7 +46,7 @@ export const ProtectedRoutes: Array<RouteObject> = [
         element: <Users />,
       },
       {
-        path: '/userDetail/:id',
+        path: '/userDetail/:userId',
         element: <UserDetail />,
       },
       {

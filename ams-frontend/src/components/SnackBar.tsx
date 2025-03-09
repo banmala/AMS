@@ -16,11 +16,11 @@ const Snackbar: React.FC= ({ }) => {
     <>
         {showSnackbar && 
             <div
-                className={`fixed bottom-5 right-5 px-4 py-2 rounded-lg shadow-lg flex items-center space-x-2 transition-transform duration-300 transform translate-y-0 opacity-100 z-50`}
+                className={`fixed bottom-5 right-5 px-4 py-2 rounded-lg bg-white border-gray-100 border-2 shadow-xl flex items-center space-x-2 transition-transform duration-300 transform translate-y-0 opacity-100 z-[9999]`}
             >
                 <span>{message}</span>
-                <button className="text-white font-bold" onClick={()=>dispatch(removeSnackbar())}>
-                    X
+                <button className="text-black font-bold" onClick={()=>dispatch(removeSnackbar())}>
+                    x
                 </button>
             </div>
         }

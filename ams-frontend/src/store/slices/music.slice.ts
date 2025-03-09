@@ -1,12 +1,11 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { IMusic } from '@/@types/music.type';
 import { createMusicApi, deleteMusicById, fetchMusicByArtistId, fetchMusicDetailById, getAllMusicData, updateMusicApi } from '@/api/music.api';
+import { displaySnackbar } from './snackbar.slice';
 
 interface musicState {
   data: {
     items: IMusic[];
-    search?: string;
-    desc?: boolean;
   };
   loading: boolean;
   error: string | undefined;
@@ -23,14 +22,7 @@ const initialState: musicState = {
 export const MusicSlice = createSlice({
   name: 'music',
   initialState: initialState,
-  reducers: {
-    setQuery: (state, action) => {
-      state.data.search = action.payload;
-    },
-    setOrder: (state, action) => {
-      state.data.desc = action.payload === 'desc' ? true : false;
-    },
-  },
+  reducers: {},
   extraReducers: builder => {
     builder
       .addCase(createMusic.pending, state => {
@@ -109,14 +101,16 @@ export const MusicSlice = createSlice({
 
 export const createMusic = createAsyncThunk(
   'music/createMusic',
-  async (data:IMusic): Promise<any> => {
+  async (data:IMusic,{dispatch}): Promise<any> => {
     try {
       const allMusics =  await createMusicApi(data);
+      dispatch(displaySnackbar(allMusics.message));
       return allMusics.data;
     } catch (err: any) {
       if (!err.response) {
         throw err;
       }
+      dispatch(displaySnackbar("Something went wrong!"));
       return ;
     }
   }
@@ -125,14 +119,16 @@ export const createMusic = createAsyncThunk(
 
 export const getMusics = createAsyncThunk(
   'music/getMusics',
-  async (): Promise<any> => {
+  async (_,{dispatch}): Promise<any> => {
     try {
       const allMusics =  await getAllMusicData();
+      dispatch(displaySnackbar(allMusics.message));
       return allMusics.data;
     } catch (err: any) {
       if (!err.response) {
         throw err;
       }
+      dispatch(displaySnackbar("Something went wrong!"));
       return ;
     }
   }
@@ -140,11 +136,14 @@ export const getMusics = createAsyncThunk(
 
 export const fetchMusicById = createAsyncThunk(
   'musics/fetchMusicById',
-  async (id:number) => {
+  async (id:number,{dispatch}) => {
+    console.log("id: ", id)
     const fetchData =  await fetchMusicDetailById(id);
     if (fetchData?.success == true) {
+      dispatch(displaySnackbar(fetchData.message));
       return fetchData.data[0];
     } else {
+      dispatch(displaySnackbar(fetchData.message));
       throw new Error('Error fetching music data');
     }
   }
@@ -152,11 +151,13 @@ export const fetchMusicById = createAsyncThunk(
 
 export const fetchMusicByArtist = createAsyncThunk(
   'musics/fetchMusicByArtistId',
-  async (artistId:number) => {
+  async (artistId:number,{dispatch}) => {
     const fetchData =  await fetchMusicByArtistId(artistId);
     if (fetchData?.success == true) {
+      dispatch(displaySnackbar(fetchData.message));
       return fetchData.data;
     } else {
+      dispatch(displaySnackbar(fetchData.message));
       throw new Error('Error fetching music data');
     }
   }
@@ -164,13 +165,16 @@ export const fetchMusicByArtist = createAsyncThunk(
 
 export const updateMusic = createAsyncThunk(
   'music/updateMusic',
-  async ({data,musicId}:{data: IMusic,musicId:number}, { rejectWithValue }) => {
+  async ({data,musicId}:{data: IMusic,musicId:number}, { rejectWithValue, dispatch }) => {
     try {
-      return await updateMusicApi(data, musicId);
+      const updateResult = await updateMusicApi(data, musicId);
+      dispatch(displaySnackbar(updateResult.message))
+      return updateResult;
     } catch (err: any) {
       if (!err.response) {
         throw err;
       }
+      dispatch(displaySnackbar("Something went wrong!"));
       return rejectWithValue(err.response.data.errors);
     }
   }
@@ -178,13 +182,16 @@ export const updateMusic = createAsyncThunk(
 
 export const deleteMusic = createAsyncThunk(
     'music/deleteMusic',
-    async (id:number, { rejectWithValue }) => {
+    async (id:number, { rejectWithValue, dispatch }) => {
       try {
-        return await deleteMusicById(id);
+        const deleteResult = await deleteMusicById(id);
+        dispatch(displaySnackbar(deleteResult.message))
+        return deleteResult;
       } catch (err: any) {
         if (!err.response) {
           throw err;
         }
+        dispatch(displaySnackbar("Something went wrong!"));
         return rejectWithValue(err.response.data.errors);
       }
     }

@@ -93,9 +93,8 @@ export const AuthSlice = createSlice({
 
 export const loginUser = createAsyncThunk(
   'users/login',
-  async (loginData: LoginInputData, {dispatch, getState}): Promise<ILoginResponse> => {
+  async (loginData: LoginInputData, {dispatch}): Promise<ILoginResponse> => {
     const loginResult = await loginUserApi(loginData);
-    // return loginResult
     if (
       loginResult?.success == true
     ) {
@@ -104,6 +103,7 @@ export const loginUser = createAsyncThunk(
       setLocalStorage('token', _token);
       return loginResult.data;
     } else {
+      dispatch(displaySnackbar(loginResult.message))
       throw new Error('Error logging in');
     }
   }
@@ -111,20 +111,23 @@ export const loginUser = createAsyncThunk(
 
 export const registerUser = createAsyncThunk(
   'users/register',
-  async (registerData: UserRegisterInputData): Promise<any> => {
+  async (registerData: UserRegisterInputData, {dispatch}): Promise<any> => {
     const registerResult = await registerUserApi(registerData);
     if (
       registerResult?.success == true
     ) {
+      dispatch(displaySnackbar(registerResult.message))
       return registerResult.message;
     } else {
+      dispatch(displaySnackbar(registerResult.message))
       throw new Error('Error while registering');
     }
   }
 );
 
-export const logoutUser = createAsyncThunk('users/logout', async () => {
+export const logoutUser = createAsyncThunk('users/logout', async (_,{dispatch}) => {
   removeLocalStorage("token");
+  dispatch(displaySnackbar("Logged out!"))
   return true;
 });
 

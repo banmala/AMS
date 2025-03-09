@@ -1,12 +1,11 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { IArtist } from '@/@types/artist.type';
 import { createArtistApi, deleteArtistById, fetchArtistDetailById, getAllArtistData, updateArtistApi } from '@/api/artist.api';
+import { displaySnackbar } from './snackbar.slice';
 
 interface artistState {
   data: {
     items: IArtist[];
-    search?: string;
-    desc?: boolean;
   };
   loading: boolean;
   error: string | undefined;
@@ -23,14 +22,7 @@ const initialState: artistState = {
 export const ArtistSlice = createSlice({
   name: 'artist',
   initialState: initialState,
-  reducers: {
-    setQuery: (state, action) => {
-      state.data.search = action.payload;
-    },
-    setOrder: (state, action) => {
-      state.data.desc = action.payload === 'desc' ? true : false;
-    },
-  },
+  reducers: {},
   extraReducers: builder => {
     builder
       .addCase(createArtist.pending, state => {
@@ -61,6 +53,7 @@ export const ArtistSlice = createSlice({
         state.loading = true;
       })
       .addCase(fetchArtistById.fulfilled, (state, action) => {
+        console.log("action.payload: ", action.payload)
         state.loading = false;
         state.detail=action.payload
       })
@@ -96,14 +89,16 @@ export const ArtistSlice = createSlice({
 
 export const createArtist = createAsyncThunk(
   'artist/createArtist',
-  async (data:IArtist): Promise<any> => {
+  async (data:IArtist,{dispatch}): Promise<any> => {
     try {
       const allArtists =  await createArtistApi(data);
+      dispatch(displaySnackbar(allArtists.message))
       return allArtists.data;
     } catch (err: any) {
       if (!err.response) {
         throw err;
       }
+      dispatch(displaySnackbar("Something went wrong!"))
       return ;
     }
   }
@@ -112,14 +107,16 @@ export const createArtist = createAsyncThunk(
 
 export const getArtists = createAsyncThunk(
   'artist/getArtists',
-  async (): Promise<any> => {
+  async (_,{dispatch}): Promise<any> => {
     try {
       const allArtists =  await getAllArtistData();
+      dispatch(displaySnackbar(allArtists.message))
       return allArtists.data;
     } catch (err: any) {
       if (!err.response) {
         throw err;
       }
+      dispatch(displaySnackbar("Something went wrong!"))
       return ;
     }
   }
@@ -127,11 +124,13 @@ export const getArtists = createAsyncThunk(
 
 export const fetchArtistById = createAsyncThunk(
   'artists/fetchArtistById',
-  async (id:number) => {
+  async (id:number,{dispatch}) => {
     const fetchData =  await fetchArtistDetailById(id);
     if (fetchData?.success == true) {
+      dispatch(displaySnackbar(fetchData.message))
       return fetchData.data[0];
     } else {
+      dispatch(displaySnackbar("Something went wrong!"))
       throw new Error('Error fetching artist data');
     }
   }
@@ -139,9 +138,11 @@ export const fetchArtistById = createAsyncThunk(
 
 export const updateArtist = createAsyncThunk(
   'artist/updateArtist',
-  async ({data,artistId}:{data: IArtist,artistId:number}, { rejectWithValue }) => {
+  async ({data,artistId}:{data: IArtist,artistId:number}, { rejectWithValue, dispatch }) => {
     try {
-      return await updateArtistApi(data, artistId);
+      const updateResult =  await updateArtistApi(data, artistId);
+      dispatch(displaySnackbar(updateResult.message))
+      return updateResult;
     } catch (err: any) {
       if (!err.response) {
         throw err;
@@ -153,9 +154,11 @@ export const updateArtist = createAsyncThunk(
 
 export const deleteArtist = createAsyncThunk(
     'artist/deleteArtist',
-    async (id:number, { rejectWithValue }) => {
+    async (id:number, { rejectWithValue, dispatch }) => {
       try {
-        return await deleteArtistById(id);
+        const deleteResult =  await deleteArtistById(id);
+        dispatch(displaySnackbar(deleteResult.message))
+        return deleteResult;
       } catch (err: any) {
         if (!err.response) {
           throw err;
