@@ -24,7 +24,7 @@ const createMusic = async (req: Request, res: Response) => {
 
 const listMusics = async (req: Request, res: Response) => {
     try {        
-        const [results]: any = await db.execute("SELECT * FROM music");
+        const [results]: any = await db.execute("SELECT id, artist_id, title, album_name, genre FROM music");
         return res.status(201).json({ success: true, message: "Successfully fetched musics!", data: results });
     } catch (error: any) {
         console.error("Database Error:", error);
@@ -35,7 +35,7 @@ const listMusics = async (req: Request, res: Response) => {
 const getMusics = async (req: Request, res: Response) => {
     try {        
         const musicId: number = +req.params.musicId;
-        const [results]: any = await db.execute("SELECT * FROM music WHERE id=?",[musicId]);
+        const [results]: any = await db.execute("SELECT id, artist_id, title, album_name, genre FROM music WHERE id=?",[musicId]);
         if (!Array.isArray(results) || results.length === 0) {
             return res.status(400).json({ success: false, message: "Music with given id does not exist!", data: null });
         }
@@ -49,7 +49,7 @@ const getMusics = async (req: Request, res: Response) => {
 const getMusicsByArtist = async (req: Request, res: Response) => {
     try {        
         const artistId: number = +req.params.artistId;
-        const [results]: any = await db.execute("SELECT * FROM music WHERE artist_id=?",[artistId]);
+        const [results]: any = await db.execute("SELECT id, artist_id, title, album_name, genre FROM music WHERE artist_id=?",[artistId]);
         if (!Array.isArray(results) || results.length === 0) {
             return res.status(400).json({ success: false, message: "Music with given id does not exist!", data: null });
         }

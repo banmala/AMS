@@ -38,7 +38,7 @@ export const ProtectedRoutes: Array<RouteObject> = [
         element: <Artist />,
       },
       {
-        path: '/artist/:artistId',
+        path: '/artistDetail/:artistId',
         element: <ArtistDetail />,
       },
       {

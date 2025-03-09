@@ -25,7 +25,7 @@ const createArtist = async (req: Request, res: Response) => {
 
 const listArtists = async (req: Request, res: Response) => {
     try {        
-        const [results]: any = await db.execute("SELECT * FROM artist");
+        const [results]: any = await db.execute("SELECT id, name, dob, gender, address, first_release_year, no_of_albums_released FROM artist");
         return res.status(201).json({ success: true, message: "Successfully fetched artists!", data: results });
     } catch (error: any) {
         console.error("Database Error:", error);
@@ -36,7 +36,7 @@ const listArtists = async (req: Request, res: Response) => {
 const getArtists = async (req: Request, res: Response) => {
     try {        
         const artistId: number = +req.params.artistId;
-        const [results]: any = await db.execute("SELECT * FROM artist WHERE id=?",[artistId]);
+        const [results]: any = await db.execute("SELECT id, name, dob, gender, address, first_release_year, no_of_albums_released FROM artist WHERE id=?",[artistId]);
         if (!Array.isArray(results) || results.length === 0) {
             return res.status(400).json({ success: false, message: "Artist with given id does not exist!", data: null });
         }

@@ -20,7 +20,7 @@ export default function  Register () {
   };
 
   return (
-    <div className="bg-teal-200 flex  justify-start flex-col w-4/12 h-max rounded-lg">
+    <div className="shadow-lg border-gray-100 border-2  flex  justify-start flex-col w-4/12 h-max rounded-lg">
       <h1 className="font-nunito text-4xl mt-8 text-center">Register</h1>
       <form onSubmit={handleSubmit(onSubmit)} className="px-4 mx-4">
         {/* First Name */}
